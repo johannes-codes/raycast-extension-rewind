@@ -18,18 +18,22 @@ export default function Command() {
   const fetchRewindStatus = async () => {
     try {
       setIsLoading(true);
-      
+
       // Get current screen capture status
-      const screenCaptureOutput = execSync("defaults read com.memoryvault.MemoryVault recordOnLaunch").toString().trim();
+      const screenCaptureOutput = execSync("defaults read com.memoryvault.MemoryVault recordOnLaunch")
+        .toString()
+        .trim();
       const isScreenCaptureEnabled = screenCaptureOutput === "1";
-      
+
       // Get current audio capture status
-      const audioCaptureOutput = execSync("defaults read com.memoryvault.MemoryVault recordAudioOnLaunch").toString().trim();
+      const audioCaptureOutput = execSync("defaults read com.memoryvault.MemoryVault recordAudioOnLaunch")
+        .toString()
+        .trim();
       const isAudioCaptureEnabled = audioCaptureOutput === "1";
-      
+
       setStatus({
         isScreenCaptureEnabled,
-        isAudioCaptureEnabled
+        isAudioCaptureEnabled,
       });
     } catch (error) {
       console.error("Error fetching Rewind status:", error);
@@ -42,19 +46,19 @@ export default function Command() {
   const toggleScreenCapture = async () => {
     try {
       if (!status) return;
-      
+
       const newValue = status.isScreenCaptureEnabled ? "0" : "1";
       execSync(`defaults write com.memoryvault.MemoryVault recordOnLaunch -int ${newValue}`);
-      
+
       // Restart Rewind to apply changes
       execSync("killall Rewind || true");
       execSync("open -a Rewind");
-      
+
       // Update local state immediately before showing HUD
-      setStatus(prevStatus => 
-        prevStatus ? { ...prevStatus, isScreenCaptureEnabled: !prevStatus.isScreenCaptureEnabled } : null
+      setStatus((prevStatus) =>
+        prevStatus ? { ...prevStatus, isScreenCaptureEnabled: !prevStatus.isScreenCaptureEnabled } : null,
       );
-      
+
       await showHUD(`Screen Capture ${status.isScreenCaptureEnabled ? "Disabled" : "Enabled"}`);
     } catch (error) {
       console.error("Error toggling screen capture:", error);
@@ -65,19 +69,19 @@ export default function Command() {
   const toggleAudioCapture = async () => {
     try {
       if (!status) return;
-      
+
       const newValue = status.isAudioCaptureEnabled ? "0" : "1";
       execSync(`defaults write com.memoryvault.MemoryVault recordAudioOnLaunch -int ${newValue}`);
-      
+
       // Restart Rewind to apply changes
       execSync("killall Rewind || true");
       execSync("open -a Rewind");
-      
+
       // Update local state immediately before showing HUD
-      setStatus(prevStatus => 
-        prevStatus ? { ...prevStatus, isAudioCaptureEnabled: !prevStatus.isAudioCaptureEnabled } : null
+      setStatus((prevStatus) =>
+        prevStatus ? { ...prevStatus, isAudioCaptureEnabled: !prevStatus.isAudioCaptureEnabled } : null,
       );
-      
+
       await showHUD(`Audio Capture ${status.isAudioCaptureEnabled ? "Disabled" : "Enabled"}`);
     } catch (error) {
       console.error("Error toggling audio capture:", error);
@@ -121,7 +125,7 @@ export default function Command() {
           }
         />
       </List.Section>
-      
+
       <List.Section title="Application">
         <List.Item
           icon={Icon.AppWindow}
@@ -136,4 +140,4 @@ export default function Command() {
       </List.Section>
     </List>
   );
-} 
+}
