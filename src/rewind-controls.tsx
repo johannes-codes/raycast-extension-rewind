@@ -1,4 +1,4 @@
-import { ActionPanel, Action, Icon, List, showHUD, closeMainWindow, PopToRootType } from "@raycast/api";
+import { ActionPanel, Action, Icon, List, showHUD } from "@raycast/api";
 import { useEffect, useState } from "react";
 import { execSync } from "child_process";
 
@@ -56,8 +56,6 @@ export default function Command() {
       );
       
       await showHUD(`Screen Capture ${status.isScreenCaptureEnabled ? "Disabled" : "Enabled"}`);
-      
-      // Don't try to refresh status after showing HUD as the window will be closed
     } catch (error) {
       console.error("Error toggling screen capture:", error);
       await showHUD("Failed to toggle screen capture");
@@ -81,8 +79,6 @@ export default function Command() {
       );
       
       await showHUD(`Audio Capture ${status.isAudioCaptureEnabled ? "Disabled" : "Enabled"}`);
-      
-      // Don't try to refresh status after showing HUD as the window will be closed
     } catch (error) {
       console.error("Error toggling audio capture:", error);
       await showHUD("Failed to toggle audio capture");
