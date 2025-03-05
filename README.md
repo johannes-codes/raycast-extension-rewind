@@ -1,5 +1,7 @@
 # Rewind AI Control
 
+![Cursor screenshot](./metadata/example.png)
+
 A Raycast extension to control the Rewind AI application directly from Raycast.
 
 ## Features
